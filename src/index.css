@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: light --default;
+}
+
+body {
+    font-family: "Vazirmatn", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+}
+
+
+:where(:root), :root:has(input.theme-controller[value=light]:checked), [data-theme=light] {
+    color-scheme: light;
+    --radius-selector: 0.5rem;
+    --radius-field: 0.45rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+}
