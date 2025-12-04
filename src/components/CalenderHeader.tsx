@@ -1,18 +1,19 @@
 import {addDays, addMonths, addWeeks, format, subDays, subMonths, subWeeks} from "date-fns-jalali";
-import {useState} from "react";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import type {ViewMode} from "../types/calendar.types.ts";
 
 const monthsFa = [
     "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
     "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"
 ];
 
-const CalenderHeader = ({currentDate, today, setCurrentDate}: {
+const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     currentDate: Date,
     setCurrentDate: (date: any) => void,
-    today: Date
+    today: Date,
+    view: ViewMode,
+    setView: (view: ViewMode) => void,
 }) => {
-    const [view, setView] = useState<"month" | "week" | "day">("month");
 
     const currentYear = Number(format(currentDate, "yyyy"));
     const maxYear = Number(format(today, "yyyy")) + 5;
@@ -100,8 +101,8 @@ const CalenderHeader = ({currentDate, today, setCurrentDate}: {
                 {/* MONTH SELECT */}
                 <select
                     className="select"
-                    value={Number(format(currentDate, "MM"))-1}
-                    onChange={(e) => goTo({year: currentDate.getFullYear(), month: Number(e.target.value)-1})}
+                    value={Number(format(currentDate, "MM")) - 1}
+                    onChange={(e) => goTo({year: currentDate.getFullYear(), month: Number(e.target.value) - 1})}
                 >
                     {monthsFa.map((m, i) => (
                         <option key={i} value={i}>
