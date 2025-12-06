@@ -1,14 +1,18 @@
 import {eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, startOfMonth, startOfWeek} from "date-fns-jalali";
 import {gregorianMonths, WEEK_DAYS} from "../../constans/calender.ts";
+import type {Dispatch} from "react";
+import type {ViewMode} from "../../types/calendar.types.ts";
 
-const MonthDisplay = ({currentDate, today}: {
+const MonthDisplay = ({currentDate, today, setCurrentDate, setView}: {
     currentDate: Date;
     today: Date;
+    setCurrentDate: Dispatch<Date>;
+    setView: Dispatch<ViewMode>;
 }) => {
     const start = startOfMonth(currentDate);
     const end = endOfMonth(currentDate);
 
-    const monthStartWeek = startOfWeek(start, {weekStartsOn: 6}); // Saturday = 6
+    const monthStartWeek = startOfWeek(start, {weekStartsOn: 6});
 
     const monthEndWeek = endOfWeek(end, {weekStartsOn: 6});
 
@@ -16,6 +20,11 @@ const MonthDisplay = ({currentDate, today}: {
         start: monthStartWeek,
         end: monthEndWeek,
     });
+
+    const handleCellClick = (date: Date) => {
+        setCurrentDate(date)
+        setView("day")
+    }
 
 
     return (
@@ -26,13 +35,14 @@ const MonthDisplay = ({currentDate, today}: {
             {gridDays.map((day) => {
                 const isCurrentMonth =
                     format(day, "MM") === format(currentDate, "MM");
-                const isToday=isSameDay(day,today)
+                const isToday = isSameDay(day, today)
 
                 return (
                     <div
+                        onClick={() => handleCellClick(day)}
                         key={day.toISOString()}
                         className={`
-          h-24 border border-gray-300/60 p-1 text-sm flex justify-between
+          h-24 border border-gray-300/60 p-1 text-sm flex justify-between cursor-pointer
           ${isCurrentMonth ? "" : "bg-gray-100 text-gray-400"}
           ${isToday ? "!bg-blue-100 !text-blue-400" : ""}
         `}>
