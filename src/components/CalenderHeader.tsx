@@ -1,6 +1,7 @@
 import {addDays, addMonths, addWeeks, format, subDays, subMonths, subWeeks} from "date-fns-jalali";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import type {ViewMode} from "../types/calendar.types.ts";
+import type {Dispatch, SetStateAction} from "react";
 
 const monthsFa = [
     "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
@@ -9,7 +10,7 @@ const monthsFa = [
 
 const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     currentDate: Date,
-    setCurrentDate: (date: any) => void,
+    setCurrentDate: Dispatch<SetStateAction<Date>>,
     today: Date,
     view: ViewMode,
     setView: (view: ViewMode) => void,
@@ -44,76 +45,80 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     };
 
     return (
-        <div className="flex items-center gap-4">
+        <div className={"flex justify-between flex-wrap gap-4 items-center"}>
+            <h1 className={"text-lg font-semibold"}>
+                تقویم
+            </h1>
+            <div className="flex items-center gap-4">
+                {/* View selector */}
+                <div className="tabs tabs-box">
+                    <input
+                        type="radio"
+                        name="view"
+                        className="tab"
+                        aria-label="ماه"
+                        checked={view === "month"}
+                        onChange={() => setView("month")}
+                    />
+                    <input
+                        type="radio"
+                        name="view"
+                        className="tab"
+                        aria-label="هفته"
+                        checked={view === "week"}
+                        onChange={() => setView("week")}
+                    />
+                    <input
+                        type="radio"
+                        name="view"
+                        className="tab"
+                        aria-label="روز"
+                        checked={view === "day"}
+                        onChange={() => setView("day")}
+                    />
+                </div>
 
-            {/* View selector */}
-            <div className="tabs tabs-box">
-                <input
-                    type="radio"
-                    name="view"
-                    className="tab"
-                    aria-label="ماه"
-                    checked={view === "month"}
-                    onChange={() => setView("month")}
-                />
-                <input
-                    type="radio"
-                    name="view"
-                    className="tab"
-                    aria-label="هفته"
-                    checked={view === "week"}
-                    onChange={() => setView("week")}
-                />
-                <input
-                    type="radio"
-                    name="view"
-                    className="tab"
-                    aria-label="روز"
-                    checked={view === "day"}
-                    onChange={() => setView("day")}
-                />
-            </div>
-
-            {/* Today buttons */}
-            <button className="btn" onClick={() => setCurrentDate(today)}>
-                {view === "month" ? "این ماه" : view === "week" ? "این هفته" : "امروز"}
-            </button>
-
-            {/* Navigation */}
-            <div className="flex items-center gap-3">
-                <button className="btn btn-ghost" onClick={goPrev}>
-                    <ChevronRight className="h-4 w-4"/>
+                {/* Today buttons */}
+                <button className="btn" onClick={() => setCurrentDate(today)}>
+                    {view === "month" ? "این ماه" : view === "week" ? "این هفته" : "امروز"}
                 </button>
 
-                {/* YEAR INPUT */}
-                <input
-                    type="number"
-                    className="input w-20"
-                    min={1400}
-                    max={maxYear}
-                    value={currentYear}
-                    onChange={(e) => {
-                        const y = Number(e.target.value);
-                        if (!isNaN(y)) goTo({year: Math.min(y, maxYear)});
-                    }}
-                />
+                {/* Navigation */}
+                <div className="flex items-center gap-3">
+                    <button className="btn btn-ghost" onClick={goPrev}>
+                        <ChevronRight className="h-4 w-4"/>
+                    </button>
 
-                {/* MONTH SELECT */}
-                <select
-                    className="select"
-                    value={Number(format(currentDate, "MM")) - 1}
-                    onChange={(e) => goTo({year: currentDate.getFullYear(), month: Number(e.target.value) - 1})}
-                >
-                    {monthsFa.map((m, i) => (
-                        <option key={i} value={i}>
-                            {m}
-                        </option>
-                    ))}
-                </select>
+                    {/* YEAR INPUT */}
+                    <input
+                        type="number"
+                        className="input w-20"
+                        min={1400}
+                        max={maxYear}
+                        value={currentYear}
+                        onChange={(e) => {
+                            const y = Number(e.target.value);
+                            if (!isNaN(y)) goTo({year: Math.min(y, maxYear)});
+                        }}
+                    />
 
-                <button className="btn btn-ghost" onClick={goNext}>
-                    <ChevronLeft className="h-4 w-4"/>
-                </button>
+                    {/* MONTH SELECT */}
+                    <select
+                        className="select"
+                        value={Number(format(currentDate, "MM")) - 1}
+                        onChange={(e) => goTo({year: currentDate.getFullYear(), month: Number(e.target.value) - 1})}
+                    >
+                        {monthsFa.map((m, i) => (
+                            <option key={i} value={i}>
+                                {m}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button className="btn btn-ghost" onClick={goNext}>
+                        <ChevronLeft className="h-4 w-4"/>
+                    </button>
+                </div>
             </div>
         </div>
     );
