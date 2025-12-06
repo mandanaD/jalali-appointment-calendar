@@ -3,6 +3,7 @@ import MonthDisplay from "./Month/MonthDisplay.tsx";
 import CalenderHeader from "./CalenderHeader.tsx";
 import type {ViewMode} from "../types/calendar.types.ts";
 import WeekDisplay from "./Week/WeekDisplay.tsx";
+import DayDisplay from "./Day/DayDisplay.tsx";
 
 
 const Calender = () => {
@@ -16,10 +17,18 @@ const Calender = () => {
                             setCurrentDate={setCurrentDate}/>
             {
                 view === "month" ? (
-                    <MonthDisplay today={today} currentDate={currentDate}/>
+                    <MonthDisplay
+                        setView={setView}
+                        setCurrentDate={setCurrentDate}
+                        today={today}
+                        currentDate={currentDate}/>
                 ) : (
-                    view === "week" && (
+                    view === "week" ? (
                         <WeekDisplay today={today} currentDate={currentDate}/>
+                    ) : (
+                        view === "day" && (
+                            <DayDisplay today={today} currentDate={currentDate}/>
+                        )
                     )
                 )
             }
