@@ -5,7 +5,7 @@ function App() {
 
     return (
         <div dir={"rtl"}
-             className={"min-h-screen p-4"}
+             className={"min-h-screen p-8"}
         >
             <Calender/>
         </div>
