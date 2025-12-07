@@ -30,7 +30,15 @@ const MonthDisplay = ({currentDate, today, setCurrentDate, setView}: {
     return (
         <div className="grid grid-cols-7 border border-gray-300/60 rounded-xl overflow-hidden">
             {WEEK_DAYS.map(d => (
-                <div key={d.key} className="py-3 text-center text-base">{d.name}</div>
+                <div key={d.key} className="py-3 text-center text-sm sm:text-bas font-semibold">
+                      <span className={"hidden sm:inline"}>
+                                {d.name}
+                                </span>
+                    <span className={"sm:hidden inline"}>
+                               {d.short}
+                                </span>
+                </div>
+
             ))}
             {gridDays.map((day) => {
                 const isCurrentMonth =
@@ -42,14 +50,14 @@ const MonthDisplay = ({currentDate, today, setCurrentDate, setView}: {
                         onClick={() => handleCellClick(day)}
                         key={day.toISOString()}
                         className={`
-          h-24 border border-gray-300/60 p-1 text-sm flex justify-between cursor-pointer
+          aspect-6/8 sm:aspect-auto sm:h-24 border border-gray-300/60 p-1 text-sm flex justify-between cursor-pointer
           ${isCurrentMonth ? "" : "bg-gray-100 text-gray-400"}
           ${isToday ? "!bg-blue-100 !text-blue-400" : ""}
         `}>
                         <span>
                         {format(day, "dd")}
                         </span>
-                        <span>
+                        <span className={"sm:inline hidden"}>
                         {day.getDate()}
                             {gregorianMonths[day.getMonth()]}
                         </span>

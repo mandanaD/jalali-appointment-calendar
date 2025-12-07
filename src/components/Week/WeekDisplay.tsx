@@ -13,8 +13,7 @@ const WeekDisplay = ({today, currentDate}: {
 
     return (
         <div className="border border-gray-300/60 rounded-xl overflow-hidden w-full">
-            <div className="grid border-b border-gray-300/60"
-                 style={{gridTemplateColumns: `80px repeat(7, 1fr)`}}>
+            <div className="grid border-b border-gray-300/60 grid-cols-[60px_repeat(7,_1fr)] sm:grid-cols-[80px_repeat(7,_1fr)]">
                 <div className="border-l border-gray-300/60"/>
                 {daysOfWeek.map((day, i) => {
                     return (
@@ -22,8 +21,19 @@ const WeekDisplay = ({today, currentDate}: {
                             key={i}
                             className={` border-gray-300/60 py-4 text-center`}
                         >
-                            <div className="text-sm font-medium">
+                            <div className="text-sm font-medium hidden md:inline">
                                 {format(day, 'EEEE d MMMM')}
+                            </div>
+                            <div className="text-sm font-medium md:hidden flex flex-col gap-1">
+                                <span className={"hidden sm:inline"}>
+                                {format(day, 'EEEE')}
+                                </span>
+                                <span className={"sm:hidden inline"}>
+                                {format(day, 'EEEEE')}
+                                </span>
+                                <span>
+                                {format(day, 'd')}
+                                </span>
                             </div>
                         </div>
                     );
@@ -32,7 +42,7 @@ const WeekDisplay = ({today, currentDate}: {
                     {timeSlots.map((timeStep, index) => (
                         <div
                             key={index}
-                            className={`h-10 border border-gray-300/60 p-1 text-sm text-center`}>
+                            className={`h-8 sm:h-10 border border-gray-300/60 p-1 text-sm text-center`}>
                             {timeStep.display}
                         </div>
                     ))}
@@ -47,7 +57,7 @@ const WeekDisplay = ({today, currentDate}: {
                                         onClick={() => {
                                             console.log(day, timeStep)
                                         }}
-                                        className={`h-10 border-y border-gray-300/60 ${isToday && "bg-blue-100"}`}/>
+                                        className={`h-8 sm:h-10 border-y border-gray-300/60 ${isToday && "bg-blue-100"}`}/>
                                 ))}
                             </div>
                         )
