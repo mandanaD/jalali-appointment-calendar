@@ -45,13 +45,30 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     };
 
     return (
-        <div className={"flex justify-between flex-wrap gap-4 items-center"}>
-            <h1 className={"text-lg font-semibold"}>
-                تقویم
-            </h1>
-            <div className="flex items-center gap-4">
+        <div className={"flex flex-col sm:flex-row sm:justify-between flex-wrap gap-4 sm:items-center"}>
+            <div className={"sm:inline flex justify-between  gap-4"}>
+                <h1 className={"text-lg font-semibold"}>
+                    تقویم
+                </h1>
+                <select
+                    className="select inline sm:hidden max-w-20"
+                    value={view}
+                    onChange={(e) => setView(e.target.value as ViewMode)}
+                >
+                    <option value={"day"}>
+                        روز
+                    </option>
+                    <option value={"week"}>
+                        هفته
+                    </option>
+                    <option value={"month"}>
+                        ماه
+                    </option>
+                </select>
+            </div>
+            <div className="flex items-center sm:gap-4">
                 {/* View selector */}
-                <div className="tabs tabs-box">
+                <div className=" sm:inline hidden tabs tabs-box">
                     <input
                         type="radio"
                         name="view"
@@ -79,13 +96,13 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
                 </div>
 
                 {/* Today buttons */}
-                <button className="btn" onClick={() => setCurrentDate(today)}>
+                <button className="btn " onClick={() => setCurrentDate(today)}>
                     {view === "month" ? "این ماه" : view === "week" ? "این هفته" : "امروز"}
                 </button>
 
                 {/* Navigation */}
-                <div className="flex items-center gap-3">
-                    <button className="btn btn-ghost" onClick={goPrev}>
+                <div className="flex items-center gap-1 sm:gap-3">
+                    <button className="btn btn-ghost  sm:btn-md btn-sm" onClick={goPrev}>
                         <ChevronRight className="h-4 w-4"/>
                     </button>
 
@@ -115,7 +132,7 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
                         ))}
                     </select>
 
-                    <button className="btn btn-ghost" onClick={goNext}>
+                    <button className="btn btn-ghost sm:btn-md btn-sm" onClick={goNext}>
                         <ChevronLeft className="h-4 w-4"/>
                     </button>
                 </div>
