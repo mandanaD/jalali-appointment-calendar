@@ -35,13 +35,10 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
 
     const goTo = ({year, month}: { year?: number, month?: number }) => {
         const newYear = year ?? Number(format(currentDate, "yyyy"));
-        const newMonth = month !== undefined ? month : Number(format(currentDate, "MM")) - 1;
+        const newMonth = month !== undefined ? month : Number(format(currentDate, "M"));
         const day = Number(format(currentDate, "dd"));
-        console.log(new Date(newYear, newMonth, day))
-        console.log(month)
-        console.log(year)
-        console.log(currentDate)
-
+        const newDate = new Date(newYear, newMonth, day);
+        console.log(newDate)
     };
 
     return (
@@ -122,8 +119,8 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
                     {/* MONTH SELECT */}
                     <select
                         className="select"
-                        value={Number(format(currentDate, "MM")) - 1}
-                        onChange={(e) => goTo({year: currentDate.getFullYear(), month: Number(e.target.value) - 1})}
+                        value={Number(format(currentDate, "M"))}
+                        onChange={(e) => goTo({month: Number(e.target.value)})}
                     >
                         {monthsFa.map((m, i) => (
                             <option key={i} value={i}>
