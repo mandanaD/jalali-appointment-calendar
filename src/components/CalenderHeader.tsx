@@ -1,12 +1,9 @@
-import {addDays, addMonths, addWeeks, format, subDays, subMonths, subWeeks} from "date-fns-jalali";
+import {addDays, addMonths, addWeeks, format, subDays, subMonths, subWeeks, newDate} from "date-fns-jalali";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import type {ViewMode} from "../types/calendar.types.ts";
 import type {Dispatch, SetStateAction} from "react";
+import {JALALI_MONTH} from "../constans/calender.ts";
 
-const monthsFa = [
-    "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
-    "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"
-];
 
 const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     currentDate: Date,
@@ -16,8 +13,12 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
     setView: (view: ViewMode) => void,
 }) => {
 
-    const currentYear = Number(format(currentDate, "yyyy"));
-    const maxYear = Number(format(today, "yyyy")) + 5;
+    const currentYear = Number(format(today, "yyyy"));
+
+    const jalaliYears = Array.from({length: 12}, (_, i) => ({
+        value: (currentYear + i).toString(),
+        label: (currentYear + i).toString(),
+    }))
 
     const goNext = () =>
         setCurrentDate(prev =>
@@ -35,10 +36,12 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
 
     const goTo = ({year, month}: { year?: number, month?: number }) => {
         const newYear = year ?? Number(format(currentDate, "yyyy"));
-        const newMonth = month !== undefined ? month : Number(format(currentDate, "M"));
+        const newMonth = month !== undefined ? month - 1 : Number(format(currentDate, "M"));
         const day = Number(format(currentDate, "dd"));
-        const newDate = new Date(newYear, newMonth, day);
-        console.log(newDate)
+        const newVal = newDate(newYear, newMonth, day);
+        console.log(newYear, newMonth, day);
+        console.log(newVal);
+        setCurrentDate(newVal)
     };
 
     return (
@@ -103,18 +106,18 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
                         <ChevronRight className="h-4 w-4"/>
                     </button>
 
-                    {/* YEAR INPUT */}
-                    <input
-                        type="number"
-                        className="input w-20"
-                        min={1400}
-                        max={maxYear}
-                        value={currentYear}
-                        onChange={(e) => {
-                            const y = Number(e.target.value);
-                            if (!isNaN(y)) goTo({year: Math.min(y, maxYear)});
-                        }}
-                    />
+                    {/* YEAR SELECT */}
+                    <select
+                        className="select"
+                        value={Number(format(currentDate, "yyyy"))}
+                        onChange={(e) => goTo({year: Number(e.target.value)})}
+                    >
+                        {jalaliYears.map((m) => (
+                            <option key={m.value} value={m.value}>
+                                {m.label}
+                            </option>
+                        ))}
+                    </select>
 
                     {/* MONTH SELECT */}
                     <select
@@ -122,13 +125,12 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
                         value={Number(format(currentDate, "M"))}
                         onChange={(e) => goTo({month: Number(e.target.value)})}
                     >
-                        {monthsFa.map((m, i) => (
-                            <option key={i} value={i}>
-                                {m}
+                        {JALALI_MONTH.map((m) => (
+                            <option key={m.value} value={m.value}>
+                                {m.label}
                             </option>
                         ))}
                     </select>
-
                     <button className="btn btn-ghost sm:btn-md btn-sm" onClick={goNext}>
                         <ChevronLeft className="h-4 w-4"/>
                     </button>
