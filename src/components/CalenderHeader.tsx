@@ -108,7 +108,7 @@ const CalenderHeader = ({currentDate, today, setCurrentDate, view, setView}: {
 
                     {/* YEAR SELECT */}
                     <select
-                        className="select"
+                        className="select min-w-20"
                         value={Number(format(currentDate, "yyyy"))}
                         onChange={(e) => goTo({year: Number(e.target.value)})}
                     >
